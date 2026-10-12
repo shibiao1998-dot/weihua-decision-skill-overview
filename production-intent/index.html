@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="AI 原生项目管理平台立项构想：生产版本的输入范围、需求确认、影响分流、评分、审批与异常恢复规则。">
+<title>立项构想｜生产功能规则与流程</title>
+<style>
+:root{--ink:#17304b;--muted:#536b82;--blue:#205da8;--line:#d8e2ed;--paper:#fff;--bg:#f1f5f9;--human:#a94a09;--humanbg:#fff5ea;--green:#216c57}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 "PingFang SC","Microsoft YaHei",Arial,sans-serif}a{color:var(--blue);text-underline-offset:4px}a:hover{color:#123c71}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #f4aa38;outline-offset:4px}
+aside{position:fixed;inset:0 auto 0 0;width:254px;background:#17304b;color:#fff;padding:40px 25px;overflow:auto}aside .brand{font-size:19px;font-weight:650;letter-spacing:.04em}aside .sub{color:#bdcede;font-size:13px;margin:8px 0 30px}nav a{display:block;padding:9px 0;color:#dce7f2;font-size:14px;text-decoration:none;border-bottom:1px solid #32485f}nav a:hover{color:white}aside .edition{margin-top:30px;color:#bdcede;font-size:12px}main{max-width:1440px;margin-left:254px;padding:46px 58px 80px}.hero{padding:14px 0 36px;border-bottom:2px solid var(--ink);margin-bottom:36px}.meta{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted)}.tag{padding:2px 10px;border:1px solid #b4c8dc;border-radius:4px}.hero h1{font-size:clamp(32px,4vw,56px);font-weight:650;letter-spacing:-.035em;line-height:1.35;margin:24px 0 18px}.hero .lead{max-width:780px;font-size:19px;line-height:1.9;margin:0 0 26px}.hero .definition{font-size:15px;color:var(--muted);max-width:820px}button{font:inherit;cursor:pointer;border:1px solid #a7bbcf;background:white;padding:7px 14px;border-radius:4px;color:var(--ink)}section{margin:0 0 52px;scroll-margin-top:26px}h2{font-size:27px;line-height:1.45;margin:0 0 20px;font-weight:650}h3{font-size:19px;margin:27px 0 10px}p{max-width:880px;margin:10px 0 16px}strong{font-weight:650}.note{padding:16px 22px;border-left:4px solid var(--blue);background:#e7eff8;margin:22px 0;max-width:960px}.note.human{border-color:#cb701f;background:var(--humanbg)}.note.good{border-color:var(--green);background:#eaf4f0}.note p{margin:0}.table-wrap{overflow:auto;border:1px solid var(--line);background:white;margin:20px 0}table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px;line-height:1.75}th{background:#e7eef6;text-align:left;font-weight:650;white-space:nowrap}td,th{padding:14px 17px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:none}td:first-child{font-weight:600}caption{text-align:left;color:var(--muted);padding:12px 16px;font-size:13px;caption-side:bottom}.figure{border:1px solid var(--line);background:white;padding:16px;margin:24px 0}.figure .viewport{overflow-x:auto}.figure svg{display:block;width:100%;height:auto;min-width:760px}.figure figcaption{padding:7px 12px;color:var(--muted);font-size:13px;line-height:1.75}.figure figcaption strong{color:var(--human)}.steps{padding-left:24px;max-width:880px}.steps li{padding:3px 0 12px 8px}.citation{font-size:12px;white-space:nowrap;margin-left:5px}code{font-size:.88em;background:#e7edf3;border-radius:3px;padding:2px 5px;overflow-wrap:anywhere}.keypoints{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:28px}.keypoint{padding-top:14px;border-top:3px solid var(--blue)}.keypoint h3{font-size:17px;margin:0 0 6px}.keypoint p{font-size:14px;margin:0}.example{background:white;border:1px solid var(--line);padding:20px 24px;margin:16px 0}.example b{color:var(--blue)}.small{font-size:13px;color:var(--muted)}.sources li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}.sources span{display:block;font-size:11px;color:var(--muted);overflow-wrap:anywhere}details{background:white;border:1px solid var(--line);padding:16px 22px;margin:20px 0}summary{cursor:pointer;font-weight:600}footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}.checklist{padding-left:22px;max-width:900px}.checklist li{margin:8px 0}.flowline{padding:16px 22px;background:#17304b;color:white;font-size:17px;letter-spacing:.02em;margin:24px 0}
+@media(min-width:1600px){main{padding-left:80px;padding-right:80px}}@media(max-width:1100px){aside{width:214px;padding:30px 20px}main{margin-left:214px;padding:34px 30px}.keypoints{gap:16px}}@media(max-width:760px){aside{position:static;width:auto;padding:22px}aside .sub{margin-bottom:12px}nav{display:flex;overflow:auto;gap:18px}nav a{white-space:nowrap;border:0;padding:4px 0}aside .edition{display:none}main{margin:0;padding:25px 20px 50px}.hero h1{font-size:36px}.hero .lead{font-size:17px}.keypoints{grid-template-columns:1fr;gap:20px}h2{font-size:24px}.figure{padding:8px;margin-left:-8px;margin-right:-8px}.figure figcaption{padding:10px}.note{padding:14px 16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{body{background:white;font-size:11pt;color:#111}aside,.print-button{display:none}main{margin:0;padding:0;max-width:none}.hero{padding-top:0}.hero h1{font-size:32pt}section{margin-bottom:24pt}h2,h3{break-after:avoid}.figure,.note,tr{break-inside:avoid}.figure svg{min-width:0}.table-wrap{overflow:visible}table{min-width:0;font-size:9pt}details{border:0}a{color:inherit}.sources span{font-size:8pt}@page{size:A4;margin:16mm}}
+</style></head><body>
+<aside><div class="brand">立项构想</div><div class="sub">生产功能规则与流程说明</div><nav aria-label="文档目录">
+<a href="#overview">功能全貌</a><a href="#scope">输入与作用范围</a><a href="#requirements">需求确认与 AI 分析</a><a href="#routes">影响结果如何分流</a><a href="#charter">新候选如何正式立项</a><a href="#disputes">澄清、查重与协同</a><a href="#permissions">权限与责任</a><a href="#status">状态与失败恢复</a><a href="#evidence">依据与核查边界</a>
+</nav><div class="edition">核查日期：2026-10-12<br>生产版本：324c5777<br>固定版本快照 · 非实时手册</div></aside>
+<main><header class="hero"><div class="meta"><span class="tag">生产版本核查</span><span>2026-10-12</span><span>面向产品与业务人员</span></div>
+<h1>一个想法，如何成为<br>正式项目。</h1><p class="lead">“立项构想”先把想法变成可确认的需求，再判断影响、分配责任。只有走完相应人工决策，才会进入正式立项或已有项目调整。</p>
+<p class="definition">理解这项功能，要分清三个对象：<strong>构想</strong>记录你提出什么；<strong>备选项目</strong>承载值得研究的机会；<strong>正式项目</strong>承载已获准投入、需要主创负责的工作。</p><button class="print-button" onclick="window.print()">打印 / 另存为 PDF</button>
+<div class="keypoints"><div class="keypoint"><h3>先定范围，再看结果</h3><p>独立新构想、规划项目调整、执行项目调整，允许产出的结果不同。</p></div><div class="keypoint"><h3>确认事实，只需一次</h3><p>需求确认单处理完后，AI 生成文档并自动继续分析。</p></div><div class="keypoint"><h3>分数达标，仍需人拍板</h3><p>80 分是立项建议门槛；批准立项和指定主创仍是独立环节。</p></div></div>
+</header>
+<section id="overview"><h2>功能全貌：先研究，再分流</h2><p>提交后，系统创建构想记录并启动 AI 需求工程。需求事实经人工确认，文档生成后自动进入前置分析和意图影响分析。一个构想可以拆成多个影响项，各自进入相应办理流程；最终可能是新项目，也可能是现有项目的调整，或需要进一步澄清。</p>
+<figure class="figure"><div class="viewport"><svg role="img" aria-label="overview 业务流程图" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 600" width="1080" height="600" data-generator="fireworks-tech-graph" data-schema-version="1" data-text-metrics="heuristic-v1" data-style-id="overview-1" data-visual-theme="Flat Icon" data-diagram-type="architecture" data-motion-scene="" data-semantic-profile="generic" data-semantic-valid="true" data-quality-profile="showcase" data-max-bends-per-edge="2" data-max-total-bends="8" data-max-route-stretch="1.35" data-max-bridged-crossings="0" data-min-node-gap="40.0" data-min-container-gutter="20.0" data-min-label-clearance="4.0" data-min-segment-length="16.0">
+  <defs>
+    <marker id="overview-arrowA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="overview-arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="overview-arrowC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="overview-arrowE" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="overview-arrowF" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="overview-arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="overview-arrowH" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <filter id="overview-shadowSoft" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <filter id="overview-shadowGlass" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#020617" flood-opacity="0.28"/>
+    </filter>
+    <style>
+    text { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .title { font-size: 30px; font-weight: 700; fill: #111827; }
+    .subtitle { font-size: 14px; font-weight: 500; fill: #6b7280; }
+    .section { font-size: 13px; font-weight: 700; fill: #2563eb; letter-spacing: 1.4px; }
+    .section-sub { font-size: 12px; font-weight: 500; fill: #64748b; }
+    .node-title { font-weight: 700; fill: #111827; }
+    .node-sub { font-weight: 500; fill: #6b7280; }
+    .node-type { font-size: 12px; font-weight: 700; fill: #64748b; letter-spacing: 0.08em; }
+    .arrow-label { font-size: 12px; font-weight: 600; fill: #6b7280; }
+    .legend { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .footnote { font-size: 12px; font-weight: 500; fill: #64748b; }
+    .metric-label { font-size: 8.5px; font-weight: 700; fill: #64748b; text-transform: uppercase; }
+    .metric-value { font-size: 9.5px; font-weight: 700; fill: #111827; }
+    </style>
+  </defs>
+  <rect data-graph-role="background" width="1080.0" height="600.0" fill="#ffffff"/>
+  <text x="540.0" y="56" text-anchor="middle" class="title">从构想输入到按影响分流</text>
+  <path id="overview-o1" data-graph-role="edge" data-edge-id="overview-o1" data-source="submit" data-target="research" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 290,145 L 415,145" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#overview-arrowA)"/>
+  <path id="overview-o2" data-graph-role="edge" data-edge-id="overview-o2" data-source="research" data-target="confirm" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 665,145 L 790,145" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#overview-arrowA)"/>
+  <path id="overview-o3" data-graph-role="edge" data-edge-id="overview-o3" data-source="confirm" data-target="document" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 915,190 L 915,370" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#overview-arrowA)"/>
+  <path id="overview-o4" data-graph-role="edge" data-edge-id="overview-o4" data-source="document" data-target="impact" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 790,415 L 665,415" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#overview-arrowA)"/>
+  <path id="overview-o5" data-graph-role="edge" data-edge-id="overview-o5" data-source="impact" data-target="dispatch" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 415,415 L 290,415" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#overview-arrowA)"/>
+  <g id="overview-node-submit" data-graph-role="node" data-node-id="overview-submit" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="40,100,290,190">
+  <rect x="40.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="提交构想" data-text-max-width="226.0" x="165.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">提交构想</text>
+  <text data-text-role="subtitle" data-full-text="选项目集与范围，写想法或上传材料" data-text-max-width="226.0" x="165.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">选项目集与范围，写想法或上传材料</text>
+  </g>
+  <g id="overview-node-research" data-graph-role="node" data-node-id="overview-research" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="415,100,665,190">
+  <rect x="415.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="AI 需求研究" data-text-max-width="226.0" x="540.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">AI 需求研究</text>
+  <text data-text-role="subtitle" data-full-text="需要补充时，等待提出者回答" data-text-max-width="226.0" x="540.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">需要补充时，等待提出者回答</text>
+  </g>
+  <g id="overview-node-confirm" data-graph-role="node" data-node-id="overview-confirm" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="790,100,1040,190">
+  <rect x="790.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#fff7ed" stroke="#ea580c" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="人工确认需求事实" data-text-max-width="226.0" x="915.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">人工确认需求事实</text>
+  <text data-text-role="subtitle" data-full-text="核对理解、纠错、回答或标记待定" data-text-max-width="226.0" x="915.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">核对理解、纠错、回答或标记待定</text>
+  </g>
+  <g id="overview-node-document" data-graph-role="node" data-node-id="overview-document" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="790,370,1040,460">
+  <rect x="790.0" y="370.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="AI 生成需求文档" data-text-max-width="226.0" x="915.0" y="415.0" text-anchor="middle" class="node-title" font-size="18">AI 生成需求文档</text>
+  <text data-text-role="subtitle" data-full-text="自动继续，无需第二次确认文档" data-text-max-width="226.0" x="915.0" y="437.0" text-anchor="middle" class="node-sub" font-size="12">自动继续，无需第二次确认文档</text>
+  </g>
+  <g id="overview-node-impact" data-graph-role="node" data-node-id="overview-impact" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="415,370,665,460">
+  <rect x="415.0" y="370.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="前置分析与影响分析" data-text-max-width="226.0" x="540.0" y="415.0" text-anchor="middle" class="node-title" font-size="18">前置分析与影响分析</text>
+  <text data-text-role="subtitle" data-full-text="补充上下文；按授权范围筛选结果" data-text-max-width="226.0" x="540.0" y="437.0" text-anchor="middle" class="node-sub" font-size="12">补充上下文；按授权范围筛选结果</text>
+  </g>
+  <g id="overview-node-dispatch" data-graph-role="node" data-node-id="overview-dispatch" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="40,370,290,460">
+  <rect x="40.0" y="370.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="按影响分流并跟踪" data-text-max-width="226.0" x="165.0" y="415.0" text-anchor="middle" class="node-title" font-size="18">按影响分流并跟踪</text>
+  <text data-text-role="subtitle" data-full-text="新候选、项目调整或人工处置" data-text-max-width="226.0" x="165.0" y="437.0" text-anchor="middle" class="node-sub" font-size="12">新候选、项目调整或人工处置</text>
+  </g>
+  <g id="overview-o3-label" data-graph-role="label" data-owner="o3" data-graph-bounds="862,266,912,286">
+  <rect x="862.0" y="266.0" width="50.0" height="20" rx="6" fill="#ffffff" opacity="0.94"/>
+  <text x="887.0" y="280.0" text-anchor="middle" class="arrow-label">确认后</text>
+  </g>
+</svg></div><figcaption>蓝色表示系统推进，<strong>橙色表示人工决策</strong>。此图是主链路；补问、异常恢复和不同结果分支见后文。</figcaption></figure>
+<div class="note"><p><strong>AI 分析完成 ≠ 所有业务事项完成。</strong>分析可以已经结束，但新候选还在评估，项目负责人还未接纳建议，或立项确认单仍等待指定主创。</p></div></section>
+
+<section id="scope"><h2>输入与作用范围：选择本身就是边界</h2><p>先选一个项目集，必要时再选“调整已有项目”。新项目想法无需关联已有项目。文字与附件至少提供一种；提交保存成功后会形成可追踪的历史记录。<a class="citation" href="#r1">[1]</a></p>
+<div class="table-wrap"><table><thead><tr><th>你怎么提交</th><th>系统实际允许做什么</th><th>关键边界</th></tr></thead><tbody>
+<tr><td>不选已有项目</td><td>作为独立新构想处理，允许产出新候选或人工澄清。</td><td>即使查到相似项目，也不能仅凭模型判断自动修改、复活或挂靠旧项目。归属要另外确认。</td></tr>
+<tr><td>选择规划型母项目</td><td>在该母项目及其子树内分析影响；新增候选归属固定在所选母项目。</td><td>项目集层面的新建、更新建议被过滤；跨范围命中另走查重与协同。</td></tr>
+<tr><td>选择执行项目</td><td>只分析该执行项目职责范围内的已有项目更新。</td><td>不能据此向上级或其他项目立项；不产生其他类别的影响。</td></tr>
+<tr><td>选择“新领域”</td><td>表达现有项目集范围之外的新机会，后续专门确认领域与归属。</td><td>不能同时圈定已有项目；点击提交本身不会立即完成新项目集与新项目建立。</td></tr>
+</tbody><caption>范围由后端再次校验，不只依赖页面选择器。被圈定项目须位于所选项目集、属于规划或执行类型且未归档。[1][5]</caption></table></div>
+<h3>材料与草稿</h3><p>页面最多保留 6 个附件。生产 API 的上传配置在本次只读核查中为：最多 6 个、单个 10,000,000 字节、合计 20,000,000 字节。附件会进入需求研究材料；文件处理或上传失败时，提交可能被拒绝。</p>
+<p>新建输入和确认单内的临时编辑没有被证明具备跨刷新保存能力。页面没有“保存构想草稿”操作；切换项目集或点“新建录入”会清空当前新建输入。长内容应先在本地保存，避免刷新丢失。</p></section>
+
+<section id="requirements"><h2>需求确认与 AI 分析：哪些地方需要你介入</h2><h3>第一步，AI 理解想法</h3><p>生产手工入口接入外部 AI 需求工程会话。它研究输入、整理事实与场景，需要补问时暂停等待回答。页面展示三个产物：<strong>信息全景图、需求确认单、需求文档</strong>。信息全景图组织材料，确认单用于校准事实，需求文档承接最终确认结果。<a class="citation" href="#r4">[4]</a></p>
+<h3>第二步，逐条确认事实</h3><div class="table-wrap"><table><thead><tr><th>确认单内容</th><th>你需要做什么</th></tr></thead><tbody>
+<tr><td>需要回答的问题</td><td>直接回答，或明确选择“现在定不了”，把不确定性留在材料中。</td></tr><tr><td>低 / 中把握陈述</td><td>逐条判断对不对；选“不对”必须补一句纠正。</td></tr><tr><td>高把握的 AI 理解</td><td>默认“对”，仍可核对并纠正。</td></tr><tr><td>背景参考</td><td>决定是否勾选并交给 AI 作为参考。</td></tr>
+</tbody></table></div><p>未处理项清零后，才能点击“确认，生成需求文档”。这表示你确认的是<strong>需求事实与理解</strong>，不等于批准立项、批准预算或同意修改现有项目。<a class="citation" href="#r3">[3]</a></p>
+<h3>第三步，自动生成文档并判断影响</h3><p>确认后的需求文档自动继续，不再二次要求确认相同内容。之后，前置分析补充会议等上下文，先提炼需求级目标用户，再提炼核心价值。意图影响分析师结合输入、项目与候选信息、检索证据给出结构化影响；复核环节检查依据，最后由代码按作用范围过滤结果。<a class="citation" href="#r17">[17]</a><a class="citation" href="#r5">[5]</a></p>
+<div class="note human"><p><strong>证据不足要看作信息缺口。</strong>前置分析可在失败后降级继续，复核也是软依赖。生产页面可能显示“没有相关会议记录”，但缺少检索证据并不能证明会议记录不存在；判断时应同时看证据质量、失败信息和待确认问题。</p></div></section>
+
+<section id="routes"><h2>影响结果如何分流</h2><p>系统总共有七种影响类型；成果视图会合并部分统计，所以统计分组数与类型数未必相等。下表描述全平台能力，实际能出现哪些项，仍受前面的提交范围限制。</p>
+<div class="table-wrap"><table><thead><tr><th>影响类型</th><th>下一步</th><th>什么才算落实</th></tr></thead><tbody>
+<tr><td>新项目候选</td><td>先确认归属，再研究、评分、人工立项。</td><td>候选形成只是进入备选池；正式立项还需批准与指定主创。</td></tr>
+<tr><td>启动已有备选项目</td><td>判断是否应复用原候选，材料并入后重评；把握中等时先问提出者。</td><td>新材料被原候选接收，并进入相应复盘 / 评估流程。</td></tr>
+<tr><td>已有项目更新</td><td>生成项目更新建议单，必要时由 AI 起草变更。</td><td>负责人逐条确认并应用；草案本身不直接改变项目。</td></tr>
+<tr><td>项目集新增 / 更新</td><td>走项目集边界确认或结构建议处置。</td><td>专用新领域流程按确认结果建立；普通结构建议须另在管理入口完成。</td></tr>
+<tr><td>母项目归属确认</td><td>明确归到哪个规划母项目，或是否新开母项目。</td><td>归属被具备权限的人确认；不能把“已识别”视为已调整。</td></tr>
+<tr><td>关闭 / 合并建议</td><td>交相关负责人判断是否执行结构调整。</td><td>这是建议，不会自动关闭或合并项目。</td></tr>
+<tr><td>需要人工澄清</td><td>提出具体问题，等待补充、继续原判或撤回。</td><td>澄清单作出决定后，按对应路径继续或结束。</td></tr>
+</tbody></table></div>
+<p>普通结构建议的“已按建议处理”是记录办理结果；“无需调整”必须填写原因。这个操作不会替你在项目管理页执行结构变更。原文没有点名、仅由 AI 推断可能受影响的项目，原则上只知会负责人；符合真实查重证据条件的跨范围命中另走协同。</p>
+<h3>已有项目负责人如何处理建议</h3><p>可去项目主页调整、确认已调整完成、说明无需调整，或驳回退回提出者。AI 变更草案须经人工确认才能应用。若材料实际补充的是同一个正在立项且基础目标尚未完成的项目，系统可以并入在途立项流程，避免重复发起一条更新链。<a class="citation" href="#r11">[11]</a></p></section>
+
+<section id="charter"><h2>新候选如何正式立项</h2><figure class="figure"><div class="viewport"><svg role="img" aria-label="charter 业务流程图" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 600" width="1080" height="600" data-generator="fireworks-tech-graph" data-schema-version="1" data-text-metrics="heuristic-v1" data-style-id="charter-1" data-visual-theme="Flat Icon" data-diagram-type="architecture" data-motion-scene="" data-semantic-profile="generic" data-semantic-valid="true" data-quality-profile="showcase" data-max-bends-per-edge="2" data-max-total-bends="8" data-max-route-stretch="1.35" data-max-bridged-crossings="0" data-min-node-gap="40.0" data-min-container-gutter="20.0" data-min-label-clearance="4.0" data-min-segment-length="16.0">
+  <defs>
+    <marker id="charter-arrowA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="charter-arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="charter-arrowC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="charter-arrowE" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="charter-arrowF" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="charter-arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="charter-arrowH" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <filter id="charter-shadowSoft" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <filter id="charter-shadowGlass" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#020617" flood-opacity="0.28"/>
+    </filter>
+    <style>
+    text { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .title { font-size: 30px; font-weight: 700; fill: #111827; }
+    .subtitle { font-size: 14px; font-weight: 500; fill: #6b7280; }
+    .section { font-size: 13px; font-weight: 700; fill: #2563eb; letter-spacing: 1.4px; }
+    .section-sub { font-size: 12px; font-weight: 500; fill: #64748b; }
+    .node-title { font-weight: 700; fill: #111827; }
+    .node-sub { font-weight: 500; fill: #6b7280; }
+    .node-type { font-size: 12px; font-weight: 700; fill: #64748b; letter-spacing: 0.08em; }
+    .arrow-label { font-size: 12px; font-weight: 600; fill: #6b7280; }
+    .legend { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .footnote { font-size: 12px; font-weight: 500; fill: #64748b; }
+    .metric-label { font-size: 8.5px; font-weight: 700; fill: #64748b; text-transform: uppercase; }
+    .metric-value { font-size: 9.5px; font-weight: 700; fill: #111827; }
+    </style>
+  </defs>
+  <rect data-graph-role="background" width="1080.0" height="600.0" fill="#ffffff"/>
+  <text x="540.0" y="56" text-anchor="middle" class="title">新候选如何走到正式立项</text>
+  <path id="charter-c1" data-graph-role="edge" data-edge-id="charter-c1" data-source="belong" data-target="study" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 290,145 L 415,145" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#charter-arrowA)"/>
+  <path id="charter-c2" data-graph-role="edge" data-edge-id="charter-c2" data-source="study" data-target="human" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 665,145 L 790,145" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#charter-arrowA)"/>
+  <path id="charter-c3" data-graph-role="edge" data-edge-id="charter-c3" data-source="human" data-target="project" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 915,190 L 915,370" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#charter-arrowA)"/>
+  <path id="charter-c4" data-graph-role="edge" data-edge-id="charter-c4" data-source="project" data-target="lead" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 790,415 L 665,415" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#charter-arrowA)"/>
+  <path id="charter-c5" data-graph-role="edge" data-edge-id="charter-c5" data-source="lead" data-target="finish" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 415,415 L 290,415" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#charter-arrowA)"/>
+  <g id="charter-node-belong" data-graph-role="node" data-node-id="charter-belong" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="40,100,290,190">
+  <rect x="40.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#fff7ed" stroke="#ea580c" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="先确认项目归属" data-text-max-width="226.0" x="165.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">先确认项目归属</text>
+  <text data-text-role="subtitle" data-full-text="独立构想不能仅凭查重自动挂靠" data-text-max-width="226.0" x="165.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">独立构想不能仅凭查重自动挂靠</text>
+  </g>
+  <g id="charter-node-study" data-graph-role="node" data-node-id="charter-study" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="415,100,665,190">
+  <rect x="415.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="研究与六维评分" data-text-max-width="226.0" x="540.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">研究与六维评分</text>
+  <text data-text-role="subtitle" data-full-text="立项建议门槛固定为 80 分" data-text-max-width="226.0" x="540.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">立项建议门槛固定为 80 分</text>
+  </g>
+  <g id="charter-node-human" data-graph-role="node" data-node-id="charter-human" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="790,100,1040,190">
+  <rect x="790.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#fff7ed" stroke="#ea580c" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="人工决定是否立项" data-text-max-width="226.0" x="915.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">人工决定是否立项</text>
+  <text data-text-role="subtitle" data-full-text="达标走确认；不足走评估或破格" data-text-max-width="226.0" x="915.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">达标走确认；不足走评估或破格</text>
+  </g>
+  <g id="charter-node-project" data-graph-role="node" data-node-id="charter-project" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="790,370,1040,460">
+  <rect x="790.0" y="370.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="批准后创建项目" data-text-max-width="226.0" x="915.0" y="415.0" text-anchor="middle" class="node-title" font-size="18">批准后创建项目</text>
+  <text data-text-role="subtitle" data-full-text="已有项目编号仍不等于立项单完成" data-text-max-width="226.0" x="915.0" y="437.0" text-anchor="middle" class="node-sub" font-size="12">已有项目编号仍不等于立项单完成</text>
+  </g>
+  <g id="charter-node-lead" data-graph-role="node" data-node-id="charter-lead" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="415,370,665,460">
+  <rect x="415.0" y="370.0" width="250.0" height="90.0" rx="10.0" fill="#fff7ed" stroke="#ea580c" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="指定正式主创" data-text-max-width="226.0" x="540.0" y="415.0" text-anchor="middle" class="node-title" font-size="18">指定正式主创</text>
+  <text data-text-role="subtitle" data-full-text="将责任明确交给一位主创" data-text-max-width="226.0" x="540.0" y="437.0" text-anchor="middle" class="node-sub" font-size="12">将责任明确交给一位主创</text>
+  </g>
+  <g id="charter-node-finish" data-graph-role="node" data-node-id="charter-finish" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="40,370,290,460">
+  <rect x="40.0" y="370.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="立项单完成，继续规划" data-text-max-width="226.0" x="165.0" y="415.0" text-anchor="middle" class="node-title" font-size="18">立项单完成，继续规划</text>
+  <text data-text-role="subtitle" data-full-text="章程与目标按项目类型生成、评审" data-text-max-width="226.0" x="165.0" y="437.0" text-anchor="middle" class="node-sub" font-size="12">章程与目标按项目类型生成、评审</text>
+  </g>
+  <g id="charter-c3-label" data-graph-role="label" data-owner="c3" data-graph-bounds="810.4,266,912,286">
+  <rect x="810.4" y="266.0" width="101.6" height="20" rx="6" fill="#ffffff" opacity="0.94"/>
+  <text x="861.2" y="280.0" text-anchor="middle" class="arrow-label">确认 / 批准破格</text>
+  </g>
+</svg></div><figcaption>图示是业务决策顺序。章程和目标的生成时机还受主创是否已就位影响；项目已创建但尚未指定主创时，立项单仍未完成。</figcaption></figure>
+<h3>先明确项目归属</h3><p>独立新构想需要另行确认归属。适用的归属确认单可选择新开母项目、归到已有母项目，或驳回；有明确承接关系的事项也可能转成已有母项目的更新建议。圈定规划母项目提交时，新候选已被限制在该母项目下。<a class="citation" href="#r6">[6]</a></p>
+<p>新领域确认单提供“确认新建项目集、改挂已有项目集、补充说明重判、撤回”。<strong>当前版本在确认新建后就启用项目集</strong>，并将提出者设为项目集负责人；首个规划母项目仍需走候选评估和立项确认，不因项目集已启用而自动立项。</p>
+<h3>再研究和评分</h3><p>平台固定六个维度。项目集可以调整各维权重和评分要点，不能随意增加维度；每维至少 5%，合计 100%。下表是平台默认权重，并非所有生产项目集的当前配置。<a class="citation" href="#r7">[7]</a></p>
+<div class="table-wrap"><table><thead><tr><th>维度</th><th>默认权重</th><th>主要判断</th></tr></thead><tbody>
+<tr><td>战略契合</td><td>25%</td><td>是否符合当下业务方向、战略和时间窗口。</td></tr><tr><td>公司价值 / 收益</td><td>20%</td><td>收益、成本、效率或能力沉淀是否有证据。</td></tr><tr><td>外部机会与行业趋势</td><td>15%</td><td>市场与外部机会是否支持现在做。</td></tr><tr><td>与已有项目 / 候选的关系</td><td>15%</td><td>协同、依赖、冲突以及重复建设情况。</td></tr><tr><td>可行性</td><td>15%</td><td>资源、能力、技术和前置条件能否支持落地。</td></tr><tr><td>风险可控</td><td>10%</td><td>主要风险能否识别、控制并保留退路。</td></tr>
+</tbody></table></div>
+<p>各维等级按 A=96、A−=90、B+=82、B=80、B−=76、C=55 换算，服务端按权重计算并保留两位小数。立项建议门槛固定为 <strong>80 分</strong>。<a class="citation" href="#r8">[8]</a></p>
+<div class="note"><p><strong>要区分两种分数。</strong>“候选池正式有效分”用于候选状态与排序，依据不足时可以为空；“立项建议分”可以基于已有维度等级给出建议，同时把不确定事项交人判断。不能把旧分、无效分或一个页面上的分数直接当成自动批准依据。</p></div>
+<div class="table-wrap"><table><thead><tr><th>研究后的情况</th><th>人工决策</th><th>后续</th></tr></thead><tbody>
+<tr><td>建议分达到 80</td><td>立项确认单：确认立项，或退回备选池。</td><td>确认后才推进创建项目；达标不会自动生成一个已完成立项的项目。</td></tr>
+<tr><td>不足 80，或无可用建议</td><td>立项评估单：补充信息重评、留池等待、破格 / 申请破格。</td><td>补充后重新研究；留池等待新证据；破格须理由与授权。</td></tr>
+<tr><td>人工批准破格</td><td>记录批准人、原因和决定，不改写真实评分。</td><td>继续创建项目，确认单跳过重复批准，进入指定主创环节。</td></tr>
+<tr><td>项目已创建</td><td>指定一位正式主创。</td><td>移除临时主创安排，立项单收口为“立项完成”；相应章程与目标流程继续。</td></tr>
+</tbody></table></div>
+<p>立项单一般优先交母项目主创，没有适用的母项目主创时交项目集负责人；仍无法找到适用负责人时有管理员兜底。破格通常由项目集负责人执行，已接受转交的当前经办人也可能具备该操作权。<a class="citation" href="#r9">[9]</a><a class="citation" href="#r10">[10]</a></p>
+<h3>有无临时主创，决定什么时候暂停</h3><div class="table-wrap"><table><thead><tr><th>建项目时的情况</th><th>实际推进顺序</th></tr></thead><tbody><tr><td>没有任何主创</td><td>批准立项 → 创建项目，状态为建设中 → 立即暂停，等待指定正式主创 → 继续生成章程、生成和评审目标 → 达到对应就绪条件。</td></tr><tr><td>已有临时主创</td><td>批准立项 → 创建项目，状态为建设中 → 生成章程与目标 → 目标层终审通过后指定正式主创 → 替换临时主创，完成责任交接。</td></tr></tbody></table></div><p>因此，要分开看“候选已生成项目”“项目建设中 / 目标准备就绪”和“立项单待指定主创 / 立项完成”。其中任一状态都不能代替其他状态。<a class="citation" href="#r20">[20]</a></p>
+<h3>立项后的目标链并非一律相同</h3><p>规划型项目按目标用户、核心价值、理想状态、中短期目标逐步生成和评审。执行型项目承接上游中短期目标，跳过自己生成理想状态和中短期目标，继续阶段目标与执行内容。页面展示的是可用阶段集合，不能把全部阶段当成每条构想都必走的固定清单。<a class="citation" href="#r19">[19]</a></p></section>
+
+<section id="disputes"><h2>澄清、查重与跨项目协同</h2><h3>AI 不确定时，先把问题说清</h3><p>AI 主动要求澄清时须给出具体问题；归属驳回、复核或执行受阻的退回，也可能用退回理由说明待处理事项。人工可以补充说明后重判、在条件满足时按 AI 原判断继续，或撤回。重判产生关联的子构想与新运行，保留原始记录及父子关系，不覆盖旧结论。<a class="citation" href="#r14">[14]</a></p>
+<figure class="figure"><div class="viewport"><svg role="img" aria-label="dispute 业务流程图" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 680" width="1080" height="680" data-generator="fireworks-tech-graph" data-schema-version="1" data-text-metrics="heuristic-v1" data-style-id="dispute-1" data-visual-theme="Flat Icon" data-diagram-type="architecture" data-motion-scene="" data-semantic-profile="generic" data-semantic-valid="true" data-quality-profile="showcase" data-max-bends-per-edge="2" data-max-total-bends="8" data-max-route-stretch="1.35" data-max-bridged-crossings="0" data-min-node-gap="40.0" data-min-container-gutter="20.0" data-min-label-clearance="4.0" data-min-segment-length="16.0">
+  <defs>
+    <marker id="dispute-arrowA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="dispute-arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="dispute-arrowC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="dispute-arrowE" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="dispute-arrowF" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="dispute-arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="dispute-arrowH" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <filter id="dispute-shadowSoft" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <filter id="dispute-shadowGlass" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#020617" flood-opacity="0.28"/>
+    </filter>
+    <style>
+    text { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .title { font-size: 30px; font-weight: 700; fill: #111827; }
+    .subtitle { font-size: 14px; font-weight: 500; fill: #6b7280; }
+    .section { font-size: 13px; font-weight: 700; fill: #2563eb; letter-spacing: 1.4px; }
+    .section-sub { font-size: 12px; font-weight: 500; fill: #64748b; }
+    .node-title { font-weight: 700; fill: #111827; }
+    .node-sub { font-weight: 500; fill: #6b7280; }
+    .node-type { font-size: 12px; font-weight: 700; fill: #64748b; letter-spacing: 0.08em; }
+    .arrow-label { font-size: 12px; font-weight: 600; fill: #6b7280; }
+    .legend { font-size: 12px; font-weight: 500; fill: #6b7280; }
+    .footnote { font-size: 12px; font-weight: 500; fill: #64748b; }
+    .metric-label { font-size: 8.5px; font-weight: 700; fill: #64748b; text-transform: uppercase; }
+    .metric-value { font-size: 9.5px; font-weight: 700; fill: #111827; }
+    </style>
+  </defs>
+  <rect data-graph-role="background" width="1080.0" height="680.0" fill="#ffffff"/>
+  <text x="540.0" y="56" text-anchor="middle" class="title">查重有分歧时，保留独立裁定通道</text>
+  <path id="dispute-d1" data-graph-role="edge" data-edge-id="dispute-d1" data-source="match" data-target="choose" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 290,145 L 415,145" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dispute-arrowA)"/>
+  <path id="dispute-d2" data-graph-role="edge" data-edge-id="dispute-d2" data-source="choose" data-target="accept" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 665,145 L 790,145" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dispute-arrowA)"/>
+  <path id="dispute-d3" data-graph-role="edge" data-edge-id="dispute-d3" data-source="choose" data-target="rejudge" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 540,190 L 540,310" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dispute-arrowA)"/>
+  <path id="dispute-d4" data-graph-role="edge" data-edge-id="dispute-d4" data-source="rejudge" data-target="independent" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 415,355 L 290,355" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dispute-arrowA)"/>
+  <path id="dispute-d5" data-graph-role="edge" data-edge-id="dispute-d5" data-source="rejudge" data-target="arbitrate" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 665,355 L 790,355" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dispute-arrowA)"/>
+  <path id="dispute-d6" data-graph-role="edge" data-edge-id="dispute-d6" data-source="arbitrate" data-target="result" data-edge-kind="flow" data-topic-id="" data-flow="control" data-motion-role="" data-motion-stage="" data-motion-order="" data-protocol="" data-via="" data-critical-path-id="" data-critical-hop="" data-critical-hops="" data-critical="false" data-bends="0" data-route-stretch="1.0" data-bridges="" d="M 915,400 L 915,520" fill="none" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dispute-arrowA)"/>
+  <g id="dispute-node-match" data-graph-role="node" data-node-id="dispute-match" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="40,100,290,190">
+  <rect x="40.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="命中相似项目或候选" data-text-max-width="226.0" x="165.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">命中相似项目或候选</text>
+  <text data-text-role="subtitle" data-full-text="关联依据必须来自有效检索证据" data-text-max-width="226.0" x="165.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">关联依据必须来自有效检索证据</text>
+  </g>
+  <g id="dispute-node-choose" data-graph-role="node" data-node-id="dispute-choose" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="415,100,665,190">
+  <rect x="415.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#fff7ed" stroke="#ea580c" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="提出者选择" data-text-max-width="226.0" x="540.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">提出者选择</text>
+  <text data-text-role="subtitle" data-full-text="接受复用，或说明理由提出异议" data-text-max-width="226.0" x="540.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">接受复用，或说明理由提出异议</text>
+  </g>
+  <g id="dispute-node-accept" data-graph-role="node" data-node-id="dispute-accept" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="790,100,1040,190">
+  <rect x="790.0" y="100.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="接受复用 / 承接" data-text-max-width="226.0" x="915.0" y="145.0" text-anchor="middle" class="node-title" font-size="18">接受复用 / 承接</text>
+  <text data-text-role="subtitle" data-full-text="按原对象继续；跨范围先问对方" data-text-max-width="226.0" x="915.0" y="167.0" text-anchor="middle" class="node-sub" font-size="12">按原对象继续；跨范围先问对方</text>
+  </g>
+  <g id="dispute-node-rejudge" data-graph-role="node" data-node-id="dispute-rejudge" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="415,310,665,400">
+  <rect x="415.0" y="310.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="AI 查重复判" data-text-max-width="226.0" x="540.0" y="355.0" text-anchor="middle" class="node-title" font-size="18">AI 查重复判</text>
+  <text data-text-role="subtitle" data-full-text="重新审视理由、材料与原判依据" data-text-max-width="226.0" x="540.0" y="377.0" text-anchor="middle" class="node-sub" font-size="12">重新审视理由、材料与原判依据</text>
+  </g>
+  <g id="dispute-node-independent" data-graph-role="node" data-node-id="dispute-independent" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="40,310,290,400">
+  <rect x="40.0" y="310.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="改判为不同" data-text-max-width="226.0" x="165.0" y="355.0" text-anchor="middle" class="node-title" font-size="18">改判为不同</text>
+  <text data-text-role="subtitle" data-full-text="拆出新候选，继续归属与立项" data-text-max-width="226.0" x="165.0" y="377.0" text-anchor="middle" class="node-sub" font-size="12">拆出新候选，继续归属与立项</text>
+  </g>
+  <g id="dispute-node-arbitrate" data-graph-role="node" data-node-id="dispute-arbitrate" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="790,310,1040,400">
+  <rect x="790.0" y="310.0" width="250.0" height="90.0" rx="10.0" fill="#fff7ed" stroke="#ea580c" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="仍判相同，可申请裁定" data-text-max-width="226.0" x="915.0" y="355.0" text-anchor="middle" class="node-title" font-size="18">仍判相同，可申请裁定</text>
+  <text data-text-role="subtitle" data-full-text="相关项目集负责人办理" data-text-max-width="226.0" x="915.0" y="377.0" text-anchor="middle" class="node-sub" font-size="12">相关项目集负责人办理</text>
+  </g>
+  <g id="dispute-node-result" data-graph-role="node" data-node-id="dispute-result" data-semantic-role="rect" data-motion-role="" data-motion-stage="" data-motion-order="" data-parent="" data-deployment-id="" data-topic-id="" data-span-id="" data-station-order="" data-status="" data-start-ms="" data-duration-ms="" data-parent-span="" data-graph-bounds="790,520,1040,610">
+  <rect x="790.0" y="520.0" width="250.0" height="90.0" rx="10.0" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.8"/>
+  <text data-text-role="title" data-full-text="按裁定继续" data-text-max-width="226.0" x="915.0" y="565.0" text-anchor="middle" class="node-title" font-size="18">按裁定继续</text>
+  <text data-text-role="subtitle" data-full-text="允许独立则另立；维持则并入" data-text-max-width="226.0" x="915.0" y="587.0" text-anchor="middle" class="node-sub" font-size="12">允许独立则另立；维持则并入</text>
+  </g>
+  <g id="dispute-d2-label" data-graph-role="label" data-owner="d2" data-graph-bounds="708.5,114,746.5,134">
+  <rect x="708.5" y="114.0" width="38.0" height="20" rx="6" fill="#ffffff" opacity="0.94"/>
+  <text x="727.5" y="128.0" text-anchor="middle" class="arrow-label">接受</text>
+  </g>
+  <g id="dispute-d3-label" data-graph-role="label" data-owner="d3" data-graph-bounds="475,236,537,256">
+  <rect x="475.0" y="236.0" width="62.0" height="20" rx="6" fill="#ffffff" opacity="0.94"/>
+  <text x="506.0" y="250.0" text-anchor="middle" class="arrow-label">提出异议</text>
+  </g>
+  <g id="dispute-d4-label" data-graph-role="label" data-owner="d4" data-graph-bounds="333.5,324,371.5,344">
+  <rect x="333.5" y="324.0" width="38.0" height="20" rx="6" fill="#ffffff" opacity="0.94"/>
+  <text x="352.5" y="338.0" text-anchor="middle" class="arrow-label">改判</text>
+  </g>
+  <g id="dispute-d5-label" data-graph-role="label" data-owner="d5" data-graph-bounds="708.5,324,746.5,344">
+  <rect x="708.5" y="324.0" width="38.0" height="20" rx="6" fill="#ffffff" opacity="0.94"/>
+  <text x="727.5" y="338.0" text-anchor="middle" class="arrow-label">维持</text>
+  </g>
+</svg></div><figcaption>查重异议适用于出现相关可办理结果的分支；独立新构想仍受作用范围限制，不能把“相似”直接变成修改旧项目的授权。</figcaption></figure>
+<h3>跨范围命中，必须先问对方</h3><p>跨项目范围的查重命中必须能追溯到本轮真实项目图谱检索。对方主创可以选择“接纳承接、有关系但不承接、无关”。接纳后才进入对方的项目更新建议；后两种记录关系，提出方可继续新候选研究。<a class="citation" href="#r12">[12]</a></p>
+<h3>不同意查重结论，可以复判与裁定</h3><p>提出者填写理由，可附材料，发起查重复判。改判为不同则拆出新候选；仍认定相同可接受并入，或申请相关项目集负责人裁定。跨项目集可能需要双方分别办理；任一方允许独立立项可拆出，全部维持原判才并入。超期不会自动当作同意，而会逐级知会并进入运营跟进。<a class="citation" href="#r13">[13]</a></p>
+<div class="example"><b>示例（抽象说明，不含生产数据）</b><p>你希望做一个新工具，但分析命中了另一团队的在研项目。相似性需要证据；如果进入跨范围协同，要先问对方是否承接。若你认为目标用户不同，可以带理由复判。负责人最后裁定是否独立继续，AI 不能把“看起来相似”直接当成业务合并命令。</p></div></section>
+
+<section id="permissions"><h2>权限与责任：看见、提出、批准是三回事</h2><p>最终以当前用户、业务对象、权限模板及覆盖配置的共同判断为准。页面从后端读取能否创建、编辑、重试等能力；公开可读的项目，不代表可以对它发起调整。<a class="citation" href="#r2">[2]</a></p>
+<div class="table-wrap"><table><thead><tr><th>参与者</th><th>主要责任</th><th>边界</th></tr></thead><tbody>
+<tr><td>提出者</td><td>描述构想，回答研究问题，确认事实，办理分给自己的澄清与异议。</td><td>新建资格受“立项”资源权限与覆盖配置限制；独立构想不要求先成为旧项目主创。</td></tr>
+<tr><td>项目主创</td><td>决定本项目是否承接或调整；在适用情形下办理下级候选立项。</td><td>只能在相应业务对象和职责范围内行动。</td></tr>
+<tr><td>项目集负责人</td><td>确认项目归属、新项目机会、结构处置及破格等决策。</td><td>具体办理人以单据路由和已接受转交情况为准。</td></tr>
+<tr><td>管理者 / 管理员</td><td>按授权范围查看、办理、兜底和运营跟进。</td><td>角色名称本身不能替代逐对象授权，也不能直接越过人工业务判断。</td></tr>
+<tr><td>AI 需求工程与分析角色</td><td>研究材料、提问、生成文档、分析与复核影响、研究评分、起草章程和目标。</td><td>代码范围校验、人工确认和单据决策仍然约束结果。</td></tr>
+</tbody></table></div><p>默认角色模板中，管理员、项目集负责人、主创、高管具有提出独立构想的资格；成员、查看者默认不具备。圈定已有项目时，还必须满足对应对象的职责范围与权限。上述默认值可被个人、项目或项目集配置覆盖，不能仅凭头衔推断最终可执行动作。<a class="citation" href="#r21">[21]</a></p><p>等待其他人的协同或裁定，不算你自己的待办；应到对应单据查看当前办理人、状态与理由。转交不是永久授权，后续每次动作仍检查当前办理能力。</p></section>
+
+<section id="status"><h2>状态与失败恢复：判断卡在哪里</h2><div class="table-wrap"><table><thead><tr><th>看到的状态 / 现象</th><th>实际含义</th><th>合理下一步</th></tr></thead><tbody>
+<tr><td>待启动 / 执行中</td><td>需求研究或分析正在异步推进。</td><td>查看当前阶段，不把提交受理等同完成。</td></tr>
+<tr><td>待补充 / 待确认</td><td>需要回答研究问题或处理需求确认单。</td><td>办理问题；确认前影响分析尚未触发。</td></tr>
+<tr><td>文档生成中 / 正在启动分析</td><td>需求已确认，系统正在交接下游。</td><td>无需再找第二个文档确认按钮。</td></tr>
+<tr><td>流程已停下等人拍板</td><td>业务决策阻塞，不一定是程序错误。</td><td>打开处置单；不足立项门槛会单独显示转人审。</td></tr>
+<tr><td>备选项目已生成</td><td>有候选研究对象。</td><td>去备选池查看研究、有效评分与立项办理进度。</td></tr>
+<tr><td>实际项目已创建</td><td>有正式项目对象。</td><td>继续核对主创是否已指定、立项单是否完成、目标链是否就绪。</td></tr>
+<tr><td>AI 研究中断 / 外部流程终止</td><td>研究会话可能断线，或远端结束但未交回文档。</td><td>按页面提供的“断线续传”或“重新发起”处理。</td></tr>
+<tr><td>主流程 / 子流程失败</td><td>相关运行未完成；失败范围可能仅在一个分支。</td><td>查看失败原因，使用对应重试或“从中断处继续”；不要重复新建同一构想。</td></tr>
+</tbody></table></div>
+<p>系统按记录、影响项、执行单元和子运行分别追踪；恢复尽量复用已完成对象和有效快照。有活跃运行时，重复恢复可能被拒绝，避免并发执行。提交落库与异步入队分开，因此报错后要先查历史，不能一概判断“没保存”。<a class="citation" href="#r15">[15]</a><a class="citation" href="#r16">[16]</a></p>
+<h3>阅读页面时的五个检查点</h3><ol class="checklist"><li>看清这次是独立新构想，还是对已有项目的调整。</li><li>看需求确认单是否真正提交，而不仅仅是打开或编辑过。</li><li>默认看“成果视图”确认产物，必要时切“流程视图”追溯历史与失败。</li><li>分开核对 AI 阶段完成、评审通过、人工批准、指定主创这几种状态。</li><li>看具体待办由谁处理；没有自己的待办，不等于其他分支已经全部完成。</li></ol>
+<p class="small">页面上的预计耗时只是提示，不是服务时限承诺。成果视图可能隐藏已被新结论取代的旧项；完整历史以流程视图为准。</p></section>
+
+<section id="evidence"><h2>依据与核查边界</h2><div class="note good"><p>本说明绑定生产版本 <code>324c5777b90a34354d03d399537ac1db5abeb3ac</code>。2026-10-12 只读核对两个应用节点的源码回执和实际前后端镜像版本，均一致；并在已登录生产页面核对需求工程三产物、一次确认、前置分析、成果 / 流程视图及证据质量展示。</p></div>
+<p>上传限额和需求工程启用状态来自生产 API 运行设置的白名单读取；其余规则依据该固定版本的 API、业务实现、前端及已有测试。没有新建生产构想、审批、改变业务数据或触发新的模型调用，因此<strong>没有把这次说明文档核查称为完整业务端到端验收</strong>。</p>
+<p>各项目集当前权重、个别人员覆盖权限、具体单据的经办人随配置与业务而变；请以相关页面为准。仓库主线可能已领先生产，本说明没有把尚未部署的新行为写成生产现状。</p>
+<details open><summary>固定版本的源码索引（需要仓库访问权限）</summary><ol class="sources"><li id="r1"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/api/manager_intent.py#L2609-L2711" target="_blank" rel="noopener">提交校验、独立构想标记与需求工程启动</a><span>apps/api/app/api/manager_intent.py · L2609-2711</span></li>
+<li id="r2"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/manager_intent_access.py#L25-L76" target="_blank" rel="noopener">提出构想资格与读取范围</a><span>apps/api/app/modules/manager_intent_access.py · L25-76</span></li>
+<li id="r3"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/web/src/v3/pages/InterventionCardFlow.tsx#L3067-L3205" target="_blank" rel="noopener">需求确认单逐条处理规则</a><span>apps/web/src/v3/pages/InterventionCardFlow.tsx · L3067-3205</span></li>
+<li id="r4"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/ai_requirements_workflow.py#L226-L374" target="_blank" rel="noopener">需求工程状态、文档自动确认与下游启动</a><span>apps/api/app/modules/ai_requirements_workflow.py · L226-374</span></li>
+<li id="r5"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/intent_impact.py#L1394-L1471" target="_blank" rel="noopener">独立构想、规划项目、执行项目的范围裁剪</a><span>apps/api/app/modules/intent_impact.py · L1394-1471</span></li>
+<li id="r6"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/intent_attribution.py#L91-L254" target="_blank" rel="noopener">候选归属与新领域项目集启用</a><span>apps/api/app/modules/intent_attribution.py · L91-254</span></li>
+<li id="r7"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/charter_dimensions.py#L21-L69" target="_blank" rel="noopener">固定六维、默认权重和最低权重</a><span>apps/api/app/modules/charter_dimensions.py · L21-69</span></li>
+<li id="r8"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/candidate_evaluation_v2.py#L435-L539" target="_blank" rel="noopener">等级换算、正式有效分与立项建议分</a><span>apps/api/app/modules/candidate_evaluation_v2.py · L435-539</span></li>
+<li id="r9"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/charter_cards.py#L878-L950" target="_blank" rel="noopener">不足门槛、留池与破格处理</a><span>apps/api/app/modules/charter_cards.py · L878-950</span></li>
+<li id="r10"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/charter_cards.py#L1089-L1232" target="_blank" rel="noopener">确认立项、退池与指定主创</a><span>apps/api/app/modules/charter_cards.py · L1089-1232</span></li>
+<li id="r11"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/intent_project_update.py#L1-L91" target="_blank" rel="noopener">项目更新建议的办理选项</a><span>apps/api/app/modules/intent_project_update.py · L1-91</span></li>
+<li id="r12"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/intent_collab.py#L1-L89" target="_blank" rel="noopener">跨范围协同与超期处理</a><span>apps/api/app/modules/intent_collab.py · L1-89</span></li>
+<li id="r13"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/intent_dedup_rejudge.py#L1-L100" target="_blank" rel="noopener">查重异议、复判与裁定</a><span>apps/api/app/modules/intent_dedup_rejudge.py · L1-100</span></li>
+<li id="r14"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/intent_clarification.py#L1-L81" target="_blank" rel="noopener">澄清、重判与撤回</a><span>apps/api/app/modules/intent_clarification.py · L1-81</span></li>
+<li id="r15"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/web/src/v3/pages/ManagerIntent.tsx#L5452-L5505" target="_blank" rel="noopener">流程停等、失败和恢复的页面展示</a><span>apps/web/src/v3/pages/ManagerIntent.tsx · L5452-5505</span></li>
+<li id="r16"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/core/orchestration.py#L1282-L1362" target="_blank" rel="noopener">父分析运行如何收口与保留分支</a><span>apps/api/app/core/orchestration.py · L1282-1362</span></li>
+<li id="r17"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/intent_pre_analysis.py#L1-L180" target="_blank" rel="noopener">需求级目标用户、核心价值与降级处理</a><span>apps/api/app/modules/intent_pre_analysis.py · L1-180</span></li>
+<li id="r18"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/web/src/v3/pages/ManagerIntent.tsx#L3357-L3415" target="_blank" rel="noopener">输入界面与附件数量限制</a><span>apps/web/src/v3/pages/ManagerIntent.tsx · L3357-3415</span></li>
+<li id="r19"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/core/orchestration.py#L300-L325" target="_blank" rel="noopener">不同项目类型的下游阶段差异</a><span>apps/api/app/core/orchestration.py · L300-325</span></li>
+<li id="r20"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/charter_cards.py#L735-L767" target="_blank" rel="noopener">有无临时主创时的两种立项顺序</a><span>apps/api/app/modules/charter_cards.py · L735-767</span></li>
+<li id="r21"><a href="https://github.com/shibiao1998-dot/ai-native-pm-platform/blob/324c5777b90a34354d03d399537ac1db5abeb3ac/apps/api/app/modules/permissions.py#L802-L872" target="_blank" rel="noopener">默认角色权限（允许被配置覆盖）</a><span>apps/api/app/modules/permissions.py · L802-872</span></li></ol></details>
+<p class="small">这是一份静态规则快照。升级生产版本或调整配置后，应重新核对受影响部分。公开页面不包含真实业务记录、人员名单、内部部署地址或凭据。</p></section>
+<footer>AI 原生项目管理平台 · 立项构想功能说明<br>整理于 2026-10-12。单文件 HTML；图表内嵌，无需联网加载字体或脚本。</footer></main></body></html>
